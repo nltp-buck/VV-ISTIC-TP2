@@ -23,3 +23,7 @@ Use your rule with different projects and describe you findings below. See the [
 
 ## Answer
 
+The following rule will match any combinaison of 3 nested conditions.
+```XPath
+//IfStatement//IfStatement//IfStatement
+```
