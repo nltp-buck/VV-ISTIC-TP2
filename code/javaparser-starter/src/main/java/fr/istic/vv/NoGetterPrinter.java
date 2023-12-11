@@ -7,11 +7,8 @@ import com.github.javaparser.ast.visitor.VoidVisitorWithDefaults;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-// This class visits a compilation unit and
-// prints all public enum, classes or interfaces along with their public methods
 public class NoGetterPrinter extends VoidVisitorWithDefaults<Void> {
 
     private final List<String> privateAttributes = new ArrayList<>();
