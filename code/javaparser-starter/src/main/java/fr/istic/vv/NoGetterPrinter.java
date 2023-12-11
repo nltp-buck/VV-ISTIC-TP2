@@ -81,8 +81,7 @@ public class NoGetterPrinter extends VoidVisitorWithDefaults<Void> {
     }
 
     public void GenerateFile(List<String> lines) {
-            String cheminFichier = "/home/knicolle/IdeaProjects/VV-ISTIC-TP2/code/javaparser-starter/src/main/java/fr/istic/vv";
-
+            String cheminFichier = "/home/knicolle/IdeaProjects/VV-ISTIC-TP2/code/javaparser-starter/src/main/java/fr/istic/vv/NonPublicGetter.txt";
             try {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(cheminFichier));
                 for(String line : lines){
