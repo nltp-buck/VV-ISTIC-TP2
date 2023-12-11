@@ -4,6 +4,9 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.visitor.VoidVisitorWithDefaults;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,4 +78,19 @@ public class NoGetterPrinter extends VoidVisitorWithDefaults<Void> {
             publicMethods.add(declaration.getNameAsString());
         }
     }
+
+    public void GenerateFile(List<String> lines) {
+            String cheminFichier = "/home/knicolle/IdeaProjects/VV-ISTIC-TP2/code/javaparser-starter/src/main/java/fr/istic/vv";
+
+            try {
+                BufferedWriter writer = new BufferedWriter(new FileWriter(cheminFichier));
+                for(String line : lines){
+                    writer.write(line+"\n");
+                }
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
+        }
 }
