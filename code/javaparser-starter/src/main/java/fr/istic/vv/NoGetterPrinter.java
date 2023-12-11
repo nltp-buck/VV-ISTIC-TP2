@@ -1,6 +1,7 @@
 package fr.istic.vv;
 
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.nodeTypes.modifiers.NodeWithAccessModifiers;
 import com.github.javaparser.ast.visitor.VoidVisitorWithDefaults;
@@ -8,12 +9,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class NoGetterPrinter extends VoidVisitorWithDefaults<Void> {
 
     private final List<String> privateAttributes = new ArrayList<>();
     private final List<String> publicMethods = new ArrayList<>();
-    private final List<FaultyAttribute> faultyArttributes = new ArrayList<>();
+    private final List<FaultyAttribute> faultyAttributes = new ArrayList<>();
 
     @Override
     public void visit(CompilationUnit unit, Void arg) {
@@ -22,10 +24,21 @@ public class NoGetterPrinter extends VoidVisitorWithDefaults<Void> {
         }
     }
 
+    @Override
+    public void visit(ClassOrInterfaceDeclaration declaration, Void arg) {
+        visitTypeDeclaration(declaration, arg);
+    }
+
+    @Override
+    public void visit(EnumDeclaration declaration, Void arg) {
+        visitTypeDeclaration(declaration, arg);
+    }
+
     public void visitTypeDeclaration(TypeDeclaration<?> declaration, Void arg) {
 
-        String clazz = declaration.getNameAsString();
-        System.out.println("[i] Class : " + clazz);
+        String className = declaration.getNameAsString();
+        String packageName = declaration.getFullyQualifiedName().isPresent() ? declaration.getFullyQualifiedName().get() : "Default";
+        System.out.println("[i] Class : " + className + " (" + packageName + ")");
 
         for (FieldDeclaration field : declaration.getFields()) {
             field.accept(this, arg);
@@ -38,7 +51,7 @@ public class NoGetterPrinter extends VoidVisitorWithDefaults<Void> {
         for (String attribute : privateAttributes) {
             List<String> publicGetters = publicMethods.stream().filter((String method) -> method.toLowerCase().matches("get" + attribute.toLowerCase())).toList();
             if (publicGetters.isEmpty()) {
-                faultyArttributes.add(new FaultyAttribute(attribute, clazz));
+                faultyAttributes.add(new FaultyAttribute(packageName, className, attribute));
             }
         }
 
@@ -48,23 +61,13 @@ public class NoGetterPrinter extends VoidVisitorWithDefaults<Void> {
         export.add(exportHeader);
         System.out.println(exportHeader);
 
-        for (FaultyAttribute attribute : faultyArttributes) {
-            String exportLine = "[i] '" + attribute.attribute + "' attribute from class '" + attribute.clazz + "' is private and has no public getter.";
+        for (FaultyAttribute attribute : faultyAttributes) {
+            String exportLine = "[!] | " + attribute.packageName + " | " + attribute.className + " | " + attribute.attributeName + " : Missing public getter for private attribute.";
             System.out.println(exportLine);
             export.add(exportLine);
         }
 
         exportAsFile(export);
-    }
-
-    @Override
-    public void visit(ClassOrInterfaceDeclaration declaration, Void arg) {
-        visitTypeDeclaration(declaration, arg);
-    }
-
-    @Override
-    public void visit(EnumDeclaration declaration, Void arg) {
-        visitTypeDeclaration(declaration, arg);
     }
 
     @Override
@@ -104,17 +107,18 @@ public class NoGetterPrinter extends VoidVisitorWithDefaults<Void> {
             myWriter.close();
         } catch (IOException e) {
             System.out.println("An error occurred.");
-            e.printStackTrace();
         }
     }
 
     static class FaultyAttribute {
-        String attribute;
-        String clazz;
+        String packageName;
+        String className;
+        String attributeName;
 
-        FaultyAttribute(String attribute, String clazz) {
-            this.attribute = attribute;
-            this.clazz = clazz;
+        FaultyAttribute(String packageName, String className, String attributeName) {
+            this.packageName = packageName;
+            this.className = className;
+            this.attributeName = attributeName;
         }
     }
 }
