@@ -1,7 +1,7 @@
 package fr.istic.vv.exercice5;
 
 import com.github.javaparser.utils.SourceRoot;
-import fr.istic.vv.NoGetterPrinter;
+import fr.istic.vv.exercice5.CyclomaticComplexity;
 
 import java.io.File;
 import java.io.IOException;
