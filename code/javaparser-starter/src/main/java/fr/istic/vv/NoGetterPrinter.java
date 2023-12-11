@@ -46,21 +46,13 @@ public class NoGetterPrinter extends VoidVisitorWithDefaults<Void> {
 
     @Override
     public void visit(FieldDeclaration declaration, Void arg) {
-        System.out.println("[i] FieldDecl : " + this.getFieldDeclarationName(declaration));
+        for (VariableDeclarator var : declaration.getVariables()) {
+            System.out.println("[i] FieldDecl : " + var.getNameAsString());
+        }
     }
 
     @Override
     public void visit(MethodDeclaration declaration, Void arg) {
         System.out.println("[i] MethodDecl : " + declaration.getName());
-    }
-
-
-    private String getFieldDeclarationName(FieldDeclaration declaration) {
-        StringBuilder name = new StringBuilder();
-        // FIXME this will merge declarations like 'private String a, b;'
-        for (VariableDeclarator var : declaration.getVariables()) {
-            name.append(var.getNameAsString());
-        }
-        return name.toString();
     }
 }
