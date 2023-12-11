@@ -41,7 +41,7 @@ public class NoGetterPrinter extends VoidVisitorWithDefaults<Void> {
                 ? declaration.findCompilationUnit().get().getPackageDeclaration().isPresent()
                     ? declaration.findCompilationUnit().get().getPackageDeclaration().get().getNameAsString()
                     : "Default"
-                : "Unkown";
+                : "Unknown";
         System.out.println("[i] Class : " + className + " (" + packageName + ")");
 
         for (FieldDeclaration field : declaration.getFields()) {
