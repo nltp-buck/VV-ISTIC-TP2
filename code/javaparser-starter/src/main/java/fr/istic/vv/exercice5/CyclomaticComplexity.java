@@ -65,10 +65,6 @@ public class CyclomaticComplexity extends VoidVisitorWithDefaults<Void> {
             countControlFlowNodes(stmt);
         }
 
-        System.out.println("    Number of if statements: " + ifCount);
-        System.out.println("    Number of for statements: " + forCount);
-        System.out.println("    Number of while statements: " + whileCount);
-
         writeToFile(declaration);
 
         ifCount = 0;
@@ -77,33 +73,38 @@ public class CyclomaticComplexity extends VoidVisitorWithDefaults<Void> {
     }
 
     private void countControlFlowNodes(Statement stmt) {
-        if (stmt instanceof IfStmt) {
-            ifCount++;
-        } else if (stmt instanceof ForStmt) {
-            forCount++;
-        } else if (stmt instanceof WhileStmt) {
-            whileCount++;
-        } else if (stmt.isBlockStmt()) {
+
+        if (stmt.isBlockStmt()) {
+            System.out.println("block");
             for (Statement innerStmt : stmt.asBlockStmt().getStatements()) {
                 countControlFlowNodes(innerStmt);
             }
+        } else if (stmt instanceof ForStmt) {
+            System.out.println("for");
+            forCount++;
+            countControlFlowNodes(((ForStmt) stmt).getBody());
+        } else if (stmt instanceof WhileStmt) {
+            System.out.println("while");
+            whileCount++;
+            countControlFlowNodes(((WhileStmt) stmt).getBody());
+        } else if (stmt instanceof IfStmt) {
+            System.out.println("if");
+            ifCount++;
+            countControlFlowNodes(((IfStmt) stmt).getThenStmt());
+            countControlFlowNodes(((IfStmt) stmt).getElseStmt().get());
         }
     }
 
     private void writeToFile(MethodDeclaration declaration) {
         try {
-            // Écriture du package, de la classe, du nom de la méthode et du résultat dans le fichier
             writer.write("Package: " + declaration.findCompilationUnit().get().getPackageDeclaration().get().getName() + "  ");
             writer.write("Class: " + declaration.findCompilationUnit().get().getPrimaryTypeName().toString() + "  ");
             writer.write("Method: " + declaration.getNameAsString() + "  ");
-
-            // Écriture des paramètres de la méthode
             writer.write("Parameters: ");
             for (Parameter parameter : declaration.getParameters()) {
                 writer.write(parameter.getType().asString() + " " + parameter.getNameAsString() + ", ");
             }
             writer.write("  ");
-
             int totalNodes = ifCount + forCount + whileCount + 1;
             writer.write("Total Control Flow Nodes: " + totalNodes + "\n\n");
         } catch (IOException e) {
