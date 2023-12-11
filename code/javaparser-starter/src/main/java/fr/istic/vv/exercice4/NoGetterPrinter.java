@@ -1,4 +1,4 @@
-package fr.istic.vv;
+package fr.istic.vv.exercice4;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.PackageDeclaration;
