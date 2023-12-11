@@ -37,7 +37,11 @@ public class NoGetterPrinter extends VoidVisitorWithDefaults<Void> {
     public void visitTypeDeclaration(TypeDeclaration<?> declaration, Void arg) {
 
         String className = declaration.getNameAsString();
-        String packageName = declaration.getFullyQualifiedName().isPresent() ? declaration.getFullyQualifiedName().get() : "Default";
+        String packageName = declaration.findCompilationUnit().isPresent()
+                ? declaration.findCompilationUnit().get().getPackageDeclaration().isPresent()
+                    ? declaration.findCompilationUnit().get().getPackageDeclaration().get().getNameAsString()
+                    : "Default"
+                : "Unkown";
         System.out.println("[i] Class : " + className + " (" + packageName + ")");
 
         for (FieldDeclaration field : declaration.getFields()) {
@@ -62,7 +66,7 @@ public class NoGetterPrinter extends VoidVisitorWithDefaults<Void> {
         System.out.println(exportHeader);
 
         for (FaultyAttribute attribute : faultyAttributes) {
-            String exportLine = "[!] | " + attribute.packageName + " | " + attribute.className + " | " + attribute.attributeName + " : Missing public getter for private attribute.";
+            String exportLine = "[!] " + attribute.packageName + " | " + attribute.className + " | " + attribute.attributeName + " : Missing public getter for private attribute.";
             System.out.println(exportLine);
             export.add(exportLine);
         }
