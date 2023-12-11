@@ -1,6 +1,7 @@
 package fr.istic.vv.exercice4;
 
 import com.github.javaparser.utils.SourceRoot;
+import fr.istic.vv.NoGetterPrinter;
 
 import java.io.File;
 import java.io.IOException;
