@@ -2,10 +2,10 @@ package fr.istic.vv;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.*;
+import com.github.javaparser.ast.nodeTypes.modifiers.NodeWithAccessModifiers;
 import com.github.javaparser.ast.visitor.VoidVisitorWithDefaults;
 
 import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -92,5 +92,25 @@ public class NoGetterPrinter extends VoidVisitorWithDefaults<Void> {
                 e.printStackTrace();
                 throw new RuntimeException(e);
             }
+    }
+
+    private String GetVisibilityAsString(NodeWithAccessModifiers<?> declaration) {
+        if (declaration.isPublic()) {
+            return "Public";
         }
+        if (declaration.isPrivate()) {
+            return "Private";
+        }
+        return "Unknown";
+    }
+
+    static class FaultyAttribute {
+        String attribute;
+        String clazz;
+
+        FaultyAttribute(String attribute, String clazz) {
+            this.attribute = attribute;
+            this.clazz = clazz;
+        }
+    }
 }
