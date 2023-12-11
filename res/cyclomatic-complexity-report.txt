@@ -1,6 +1,6 @@
-Package: fr.istic.vv.example  Class: Optional[Person]  Method: getName  Parameters:   Total Control Flow Nodes: 1
+Package: fr.istic.vv.exercice4.example  Class: Optional[Person]  Method: getName  Parameters:   Total Control Flow Nodes: 1
 
-Package: fr.istic.vv.example  Class: Optional[Person]  Method: isAdult  Parameters:   Total Control Flow Nodes: 1
+Package: fr.istic.vv.exercice4.example  Class: Optional[Person]  Method: isAdult  Parameters:   Total Control Flow Nodes: 1
 
-Package: fr.istic.vv.example  Class: Optional[IFIFIF]  Method: max  Parameters: int a, int b, int c,   Total Control Flow Nodes: 2
+Package: fr.istic.vv.exercice4.example  Class: Optional[IFIFIF]  Method: max  Parameters: int a, int b, int c,   Total Control Flow Nodes: 2
 

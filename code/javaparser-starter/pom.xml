@@ -33,7 +33,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>fr.istic.vv.Main</mainClass>
+                            <mainClass>fr.istic.vv.exercice4.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -46,7 +46,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>fr.istic.vv.Main</mainClass>
+                            <mainClass>fr.istic.vv.exercice4.Main</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

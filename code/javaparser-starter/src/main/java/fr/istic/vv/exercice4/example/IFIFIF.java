@@ -1,4 +1,4 @@
-package fr.istic.vv.example;
+package fr.istic.vv.exercice4.example;
 
 public class IFIFIF {
     public static int max(int a, int b, int c) {
